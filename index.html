@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Rate Calculator</title>
+    <style>
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f3f4f6;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+        }
+        .calculator {
+            width: 100%;
+            max-width: 400px;
+            background: #ffffff;
+            border-radius: 10px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            padding: 20px;
+            box-sizing: border-box;
+        }
+        .calculator h2 {
+            text-align: center;
+            margin-bottom: 20px;
+            color: #333333;
+        }
+        .calculator label {
+            display: block;
+            margin-bottom: 8px;
+            color: #555555;
+            font-weight: bold;
+        }
+        .calculator input {
+            width: 100%;
+            padding: 10px;
+            margin-bottom: 15px;
+            border: 1px solid #d1d5db;
+            border-radius: 5px;
+            font-size: 16px;
+            color: #333333;
+            box-sizing: border-box;
+        }
+        .calculator input:focus {
+            outline: none;
+            border-color: #3b82f6;
+            box-shadow: 0 0 0 2px rgba(59, 130, 246, 0.25);
+        }
+        .calculator button {
+            width: 100%;
+            padding: 12px;
+            background-color: #3b82f6;
+            color: #ffffff;
+            border: none;
+            border-radius: 5px;
+            font-size: 16px;
+            cursor: pointer;
+            transition: background-color 0.3s ease;
+        }
+        .calculator button:hover {
+            background-color: #2563eb;
+        }
+        .result {
+            margin-top: 20px;
+            padding: 15px;
+            background: #e5f3e5;
+            border: 1px solid #a3d9a5;
+            color: #1d4e1f;
+            font-weight: bold;
+            text-align: center;
+            border-radius: 5px;
+            display: none;
+        }
+        .footer {
+            margin-top: 15px;
+            text-align: center;
+            font-size: 14px;
+            color: #888888;
+        }
+    </style>
+</head>
+<body>
+    <div class="calculator">
+        <h2>Rate Calculator</h2>
+        <label for="a">Rate per Metric Ton (a):</label>
+        <input type="number" id="a" placeholder="Enter rate in dollars">
+
+        <label for="b">Container Quantity (b):</label>
+        <input type="number" id="b" placeholder="Enter container quantity">
+
+        <label for="c">Freight (c):</label>
+        <input type="number" id="c" placeholder="Enter freight in dollars">
+
+        <label for="d">Duty Percentage (d):</label>
+        <input type="number" id="d" placeholder="Enter duty percentage">
+
+        <label for="r">Current Exchange Rate (r):</label>
+        <input type="number" id="r" placeholder="Enter exchange rate (INR/USD)">
+
+        <button onclick="calculateRate()">Calculate</button>
+
+        <div class="result" id="result"></div>
+        <div class="footer">Designed for simple rate calculations</div>
+    </div>
+
+    <script>
+        function calculateRate() {
+            // Get input values
+            const a = parseFloat(document.getElementById('a').value);
+            const b = parseFloat(document.getElementById('b').value);
+            const c = parseFloat(document.getElementById('c').value);
+            const d = parseFloat(document.getElementById('d').value);
+            const r = parseFloat(document.getElementById('r').value);
+
+            // Validate inputs
+            if (isNaN(a) || isNaN(b) || isNaN(c) || isNaN(d) || isNaN(r) || b === 0) {
+                alert('Please enter valid inputs and ensure b is not zero.');
+                return;
+            }
+
+            // Step 1: Calculate z
+            const z = (c / b);
+
+            // Step 2: Calculate y
+            const y = (z + a);
+
+            // Step 3: Calculate x (d% of y added to y)
+            const x = y + ((d / 100) * y);
+
+            // Step 4: Convert x to INR using the exchange rate
+            const finalPriceInINR = x * r;
+
+            // Display the result
+            const resultDiv = document.getElementById('result');
+            resultDiv.innerHTML = `<p>The final rate is <strong>$${x.toFixed(2)}</strong> (in USD) and <strong>₹${finalPriceInINR.toFixed(2)}</strong> (in INR).</p>`;
+            resultDiv.style.display = 'block';
+        }
+    </script>
+</body>
+</html>
